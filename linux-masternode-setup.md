@@ -96,7 +96,7 @@ In your console, enter the following commands, one at a time:
 
 ```
 git clone https://github.com/EvilCrypto/MasterBitPOS.git
-cd masterbitpos-coin
+cd masterbitpos
 ```
 
 #### Step 8 - Generate the automake files for your compile
