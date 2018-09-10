@@ -11,31 +11,31 @@ UNDERLINE='\033[4m'
 MAX=10
 CURRSTEP=0
 
-COINDOWNLOADLINK=https://github.com/bifrost-actual/bifrost-coin/releases/download/v1.1.1/bifrost-1.1.1-aarch64-linux-gnu.tar.gz
-COINDOWNLOADFILE=bifrost-1.1.1-aarch64-linux-gnu.tar.gz
-COINREPO=https://github.com/bifrost-actual/bifrost-coin.git
+COINDOWNLOADLINK=https://github.com/EvilCrypto/MasterBitPOS/releases/download/v1.1.1/masterbitpos-1.1.1-aarch64-linux-gnu.tar.gz
+COINDOWNLOADFILE=masterbitpos-1.1.1-aarch64-linux-gnu.tar.gz
+COINREPO=https://github.com/EvilCrypto/MasterBitPOS.git
 COINRPCPORT=9228
 COINPORT=9229
-COINDAEMON=bifrostd
-COINCLIENT=bifrost-cli
-COINTX=bifrost-tx
-COINCORE=.bifrost
-COINCONFIG=bifrost.conf
-COINDOWNLOADDIR=bifrostdownload
+COINDAEMON=masterbitposd
+COINCLIENT=masterbitpos-cli
+COINTX=masterbitpos-tx
+COINCORE=.masterbitpos
+COINCONFIG=masterbitpos.conf
+COINDOWNLOADDIR=masterbitposdownload
 
 
 purgeOldInstallation() {
     echo "Searching and removing old masternode files and configurations"
     #kill wallet daemon
-    sudo killall bifrostd > /dev/null 2>&1
+    sudo killall masterbitposd > /dev/null 2>&1
     #remove old ufw port allow
     sudo ufw delete allow 9229/tcp > /dev/null 2>&1
     #remove old files
-    if [ -d "~/.bifrost" ]; then
-        sudo rm -rf ~/.bifrost > /dev/null 2>&1
+    if [ -d "~/.masterbitpos" ]; then
+        sudo rm -rf ~/.masterbitpos > /dev/null 2>&1
     fi
-    #remove binaries and bifrost utilities
-    cd /usr/local/bin && sudo rm bifrost-cli bifrost-tx bifrostd > /dev/null 2>&1 && cd
+    #remove binaries and masterbitpos utilities
+    cd /usr/local/bin && sudo rm masterbitpos-cli masterbitpos-tx masterbitposd > /dev/null 2>&1 && cd
     echo -e "${GREEN}* Done${NONE}";
 }
 
@@ -94,7 +94,7 @@ setupSwap() {
 installFirewall() {
     let "CURRSTEP++"
     echo
-    echo -e "[${CURRSTEP}/${MAX}] Installing UFW Firewall and opening Bifrost port. Please wait..."
+    echo -e "[${CURRSTEP}/${MAX}] Installing UFW Firewall and opening MasterBitPOS port. Please wait..."
     sudo apt-get -y install ufw > /dev/null 2>&1
     sudo ufw allow OpenSSH > /dev/null 2>&1
     sudo ufw allow $COINPORT/tcp > /dev/null 2>&1
@@ -226,11 +226,11 @@ echo -e "|                MMMMMMMMM-  -:///////::----:/+shmMMMMMMMMMMMMMMMMM    
 echo -e "|                MMMMMMMMMmNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM               |"
 echo -e "|                MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM               |"
 echo -e "|                                                                                 |"
-echo -e "|                       Bifrost Coin Masternode Installer                         |"
+echo -e "|                       MasterBitPOS Coin Masternode Installer                         |"
 echo -e "|                                                                                 |"
 echo -e "-----------------------------------------------------------------------------------"
 echo -e "${BOLD}"
-read -p "This script will setup your Bifrost Masternode. Do you wish to continue? (y/n)?" response
+read -p "This script will setup your MasterBitPOS Masternode. Do you wish to continue? (y/n)?" response
 echo -e "${NONE}"
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
@@ -241,7 +241,7 @@ echo
     installFirewall
     installDependencies
     echo -e "${BOLD}"
-    read -p "Use pre-compiled Bifrost binaries instead of compiling from source? (y/n)?" binaries
+    read -p "Use pre-compiled MasterBitPOS binaries instead of compiling from source? (y/n)?" binaries
     echo -e "${NONE}"
     if [[ "$binaries" =~ ^([yY][eE][sS]|[yY])+$ ]];
     then

@@ -11,25 +11,25 @@ UNDERLINE='\033[4m'
 MAX=10
 CURRSTEP=0
 
-COINDOWNLOADLINK=https://github.com/bifrost-actual/bifrost-coin/releases/download/v1.1.1/bifrost-1.1.1-aarch64-linux-gnu.tar.gz
-COINDOWNLOADFILE=bifrost-1.1.1-aarch64-linux-gnu.tar.gz
-COINREPO=https://github.com/bifrost-actual/bifrost-coin.git
+COINDOWNLOADLINK=https://github.com/EvilCrypto/MasterBitPOS/releases/download/v1.1.1/masterbitpos-1.1.1-aarch64-linux-gnu.tar.gz
+COINDOWNLOADFILE=masterbitpos-1.1.1-aarch64-linux-gnu.tar.gz
+COINREPO=https://github.com/EvilCrypto/MasterBitPOS.git
 COINRPCPORT=9228
 COINPORT=9229
-COINDAEMON=bifrostd
-COINCLIENT=bifrost-cli
-COINTX=bifrost-tx
-COINCORE=.bifrost
-COINCONFIG=bifrost.conf
-COINDOWNLOADDIR=bifrostdownload
+COINDAEMON=masterbitposd
+COINCLIENT=masterbitpos-cli
+COINTX=masterbitpos-tx
+COINCORE=.masterbitpos
+COINCONFIG=masterbitpos.conf
+COINDOWNLOADDIR=masterbitposdownload
 
 purgeOldInstallation() {
     echo "Searching and removing old masternode binaries"
     #kill wallet daemon
-    sudo killall bifrostd > /dev/null 2>&1
+    sudo killall masterbitposd > /dev/null 2>&1
     #remove old files
-    #remove binaries and bifrost utilities
-    cd /usr/local/bin && sudo rm bifrost-cli bifrost-tx bifrostd > /dev/null 2>&1 && cd
+    #remove binaries and masterbitpos utilities
+    cd /usr/local/bin && sudo rm masterbitpos-cli masterbitpos-tx masterbitposd > /dev/null 2>&1 && cd
     echo -e "${GREEN}* Done${NONE}";
 }
 
@@ -70,7 +70,7 @@ cleanUp() {
 }
 echo -e "-----------------------------------------------------------------------------------"
 echo -e "-----------------------------------------------------------------------------------"
-read -p "This script will upgrade your Bifrost Masternode to v1.1. Do you wish to continue? (y/n)?" response
+read -p "This script will upgrade your MasterBitPOS Masternode to v1.1. Do you wish to continue? (y/n)?" response
 echo -e "${NONE}"
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then

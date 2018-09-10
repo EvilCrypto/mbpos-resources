@@ -11,23 +11,23 @@ UNDERLINE='\033[4m'
 MAX=7
 CURRSTEP=0
 
-COINDOWNLOADLINK=https://github.com/bifrost-actual/bifrost-coin/releases/download/v1.1.1/bifrost-1.1.1-aarch64-linux-gnu.tar.gz
-COINDOWNLOADFILE=bifrost-1.1.1-aarch64-linux-gnu.tar.gz
-COINREPO=https://github.com/bifrost-actual/bifrost-coin.git
+COINDOWNLOADLINK=https://github.com/EvilCrypto/MasterBitPOS/releases/download/v1.1.1/masterbitpos-1.1.1-aarch64-linux-gnu.tar.gz
+COINDOWNLOADFILE=masterbitpos-1.1.1-aarch64-linux-gnu.tar.gz
+COINREPO=https://github.com/EvilCrypto/MasterBitPOS.git
 COINRPCPORT=9228
 COINPORT=9229
-COINDAEMON=bifrostd
-COINCLIENT=bifrost-cli
-COINTX=bifrost-tx
-COINCORE=.bifrost
-COINCONFIG=bifrost.conf
-COINDOWNLOADDIR=bifrostdownload
+COINDAEMON=masterbitposd
+COINCLIENT=masterbitpos-cli
+COINTX=masterbitpos-tx
+COINCORE=.masterbitpos
+COINCONFIG=masterbitpos.conf
+COINDOWNLOADDIR=masterbitposdownload
 MASTERNODE_COUNT=0
 
 detectMasternodes() {
     for i in {1..100}
     do
-        if [ -d "/var/lib/masternodes/bifrost${i}" ]; then
+        if [ -d "/var/lib/masternodes/masterbitpos${i}" ]; then
             continue
         else
             break
@@ -43,7 +43,7 @@ stopServers() {
     for i in $(eval echo {1..$MASTERNODE_COUNT} )
     do
         echo "Stopping masternode ${i}"
-        systemctl stop "bifrost_n${i}" > /dev/null 2>&1
+        systemctl stop "masterbitpos_n${i}" > /dev/null 2>&1
     done
 }
 
@@ -54,8 +54,8 @@ startServers() {
     for i in $(eval echo {1..$MASTERNODE_COUNT} )
     do
         echo "Starting masternode ${i}"
-        systemctl enable "bifrost_n${i}" > /dev/null 2>&1
-        systemctl restart "bifrost_n${i}" > /dev/null 2>&1
+        systemctl enable "masterbitpos_n${i}" > /dev/null 2>&1
+        systemctl restart "masterbitpos_n${i}" > /dev/null 2>&1
         sleep 2
     done
 }
@@ -64,20 +64,20 @@ purgeOldInstallation() {
     let "CURRSTEP++"
     echo
     echo -e "[${CURRSTEP}/${MAX}] Searching and removing old masternode binaries. Please stand by..."
-    #remove binaries and bifrost utilities
-    cd /usr/local/bin && sudo rm bifrost-cli bifrost-tx bifrostd > /dev/null 2>&1 && cd
+    #remove binaries and masterbitpos utilities
+    cd /usr/local/bin && sudo rm masterbitpos-cli masterbitpos-tx masterbitposd > /dev/null 2>&1 && cd
     for i in $(eval echo {1..$MASTERNODE_COUNT} )
     do
-        rm -rf "/var/lib/masternodes/bifrost${i}/blocks" > /dev/null 2>&1
-        rm -rf "/var/lib/masternodes/bifrost${i}/chainstate" > /dev/null 2>&1
-        rm -rf "/var/lib/masternodes/bifrost${i}/database" > /dev/null 2>&1
-        rm -rf "/var/lib/masternodes/bifrost${i}/sporks" > /dev/null 2>&1
-        rm -rf "/var/lib/masternodes/bifrost${i}/zerocoin" > /dev/null 2>&1
-        rm -r "/var/lib/masternodes/bifrost${i}/debug.log" > /dev/null 2>&1
-        rm -r "/var/lib/masternodes/bifrost${i}/db.log" > /dev/null 2>&1
-        rm -r "/var/lib/masternodes/bifrost${i}/mncache.dat" > /dev/null 2>&1
-        rm -r "/var/lib/masternodes/bifrost${i}/mnpayments.dat" > /dev/null 2>&1
-        rm -r "/var/lib/masternodes/bifrost${i}/peers.dat" > /dev/null 2>&1
+        rm -rf "/var/lib/masternodes/masterbitpos${i}/blocks" > /dev/null 2>&1
+        rm -rf "/var/lib/masternodes/masterbitpos${i}/chainstate" > /dev/null 2>&1
+        rm -rf "/var/lib/masternodes/masterbitpos${i}/database" > /dev/null 2>&1
+        rm -rf "/var/lib/masternodes/masterbitpos${i}/sporks" > /dev/null 2>&1
+        rm -rf "/var/lib/masternodes/masterbitpos${i}/zerocoin" > /dev/null 2>&1
+        rm -r "/var/lib/masternodes/masterbitpos${i}/debug.log" > /dev/null 2>&1
+        rm -r "/var/lib/masternodes/masterbitpos${i}/db.log" > /dev/null 2>&1
+        rm -r "/var/lib/masternodes/masterbitpos${i}/mncache.dat" > /dev/null 2>&1
+        rm -r "/var/lib/masternodes/masterbitpos${i}/mnpayments.dat" > /dev/null 2>&1
+        rm -r "/var/lib/masternodes/masterbitpos${i}/peers.dat" > /dev/null 2>&1
     done
 
     echo -e "${GREEN}* Done${NONE}";
@@ -89,15 +89,15 @@ addNodes(){
     echo -e "[${CURRSTEP}/${MAX}] Adding core masternodes to config files. Please stand by..."
     for i in $(eval echo {1..$MASTERNODE_COUNT} )
     do
-        grep -q -F 'addnode=144.202.109.227' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=144.202.109.227' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
-        grep -q -F 'addnode=144.202.108.165' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=144.202.108.165' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
-        grep -q -F 'addnode=144.202.104.91' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=144.202.104.91' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
-        grep -q -F 'addnode=45.77.1.99' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=45.77.1.99' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
-        grep -q -F 'addnode=45.77.3.72' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=45.77.3.72' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
-        grep -q -F 'addnode=144.202.111.53' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=144.202.111.53' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
-        grep -q -F 'addnode=45.63.85.36' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=45.63.85.36' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
-        grep -q -F 'addnode=104.207.149.100' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=104.207.149.100' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
-        grep -q -F 'addnode=144.202.107.197' "/etc/masternodes/bifrost_n${i}.conf" || echo 'addnode=144.202.107.197' >> "/etc/masternodes/bifrost_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=144.202.109.227' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=144.202.109.227' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=144.202.108.165' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=144.202.108.165' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=144.202.104.91' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=144.202.104.91' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=45.77.1.99' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=45.77.1.99' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=45.77.3.72' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=45.77.3.72' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=144.202.111.53' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=144.202.111.53' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=45.63.85.36' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=45.63.85.36' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=104.207.149.100' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=104.207.149.100' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
+        grep -q -F 'addnode=144.202.107.197' "/etc/masternodes/masterbitpos_n${i}.conf" || echo 'addnode=144.202.107.197' >> "/etc/masternodes/masterbitpos_n${i}.conf" > /dev/null 2>&1
     done
 }
 
@@ -142,7 +142,7 @@ cleanUp() {
 echo
 echo
 echo
-read -p "This script will upgrade your Bifrost Masternode to v1.1. Do you wish to continue? (y/n)?" response
+read -p "This script will upgrade your MasterBitPOS Masternode to v1.1. Do you wish to continue? (y/n)?" response
 echo
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then

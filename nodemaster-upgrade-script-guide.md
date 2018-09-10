@@ -8,7 +8,7 @@
     - Connect to your VPS server as the root user
     - Type the following command to download the script:
 
-      ```wget "https://raw.githubusercontent.com/bifrost-actual/bifrost-resources/master/nodemaster-upgrade-script.sh"```
+      ```wget "https://raw.githubusercontent.com/EvilCrypto/mbpos-resources/master/nodemaster-upgrade-script.sh"```
     - Next, type the following command to allow execution of the downloaded script:
 
       ```chmod +x nodemaster-upgrade-script.sh```

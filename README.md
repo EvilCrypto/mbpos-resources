@@ -1,4 +1,4 @@
-# Bifrost Coin Resources
+# MasterBitPOS Coin Resources
 Want to create a masternode and need some help? This is the place where you will find resources to help you get up and running.
 
 If you have any questions or problems, you can join us on **[discord](https://discord.gg/uMHKEm2)** where we are happy to help you with anything we can.

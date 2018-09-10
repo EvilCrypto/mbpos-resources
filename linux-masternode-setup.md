@@ -5,9 +5,9 @@
 - PuTTY or similar SSH terminal software for connecting to your remote servers [download](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 - Some light Linux knowledge
 
-This guide assumes you have already set up an Ubuntu cloud server through a VPS service provider.  For instructions on creating a server, please see our [Setup Guide for Windows Cold Wallet and Linux VPS Server](https://github.com/bifrost-actual/bifrost-resources/blob/master/hot-cold-wallet-guide/hot-cold-wallet-guide.md) before proceeding.
+This guide assumes you have already set up an Ubuntu cloud server through a VPS service provider.  For instructions on creating a server, please see our [Setup Guide for Windows Cold Wallet and Linux VPS Server](https://github.com/EvilCrypto/mbpos-resources/blob/master/hot-cold-wallet-guide/hot-cold-wallet-guide.md) before proceeding.
 
-This guide also assumes you want to manually compile your masternode wallet from source code in the [bifrost-coin code respository](https://github.com/bifrost-actual/bifrost-coin).  If this is not the case, please feel free to use our [masternode all-in-one installation script](https://github.com/bifrost-actual/bifrost-resources).  This script includes the option for compiling from source, but does the work of preparing your system and compiling the code for you.
+This guide also assumes you want to manually compile your masternode wallet from source code in the [masterbitpos-coin code respository](https://github.com/EvilCrypto/MasterBitPOS).  If this is not the case, please feel free to use our [masternode all-in-one installation script](https://github.com/EvilCrypto/mbpos-resources).  This script includes the option for compiling from source, but does the work of preparing your system and compiling the code for you.
 
 ## Preparing your system
 
@@ -33,7 +33,7 @@ sudo apt-get install -y build-essential libtool autotools-dev autoconf automake 
 
 #### Step 3 - Install the bitcoin Personal Package Archive (PPA)
 
-Bifrost requires a version of the Berkely Database library that is no longer part of base Ubuntu installations, but it is provided by the bitcoin core team.
+MasterBitPOS requires a version of the Berkely Database library that is no longer part of base Ubuntu installations, but it is provided by the bitcoin core team.
 
 In your console, enter the following command:
 
@@ -58,7 +58,7 @@ sudo apt-get install -y libdb4.8-dev libdb4.8++-dev
 
 #### Step 5 - (Optional) Install and configure UFW firewall
 
-It is strongly recommended that you install a firewall that only allows traffic on the Bifrost mainnet port (9229) and the ssh terminal port (22).
+It is strongly recommended that you install a firewall that only allows traffic on the MasterBitPOS mainnet port (9229) and the ssh terminal port (22).
 
 In your console, enter the following commands, one at a time:
 
@@ -88,15 +88,15 @@ sudo echo "/mnt/swap.img none swap sw 0 0" >> /etc/fstab
 cd
 ```
 
-#### Step 7 - Download the Bifrost source code
+#### Step 7 - Download the MasterBitPOS source code
 
-Now it's time to clone the master branch of the bifrost source code to your local system.
+Now it's time to clone the master branch of the masterbitpos source code to your local system.
 
 In your console, enter the following commands, one at a time:
 
 ```
-git clone https://github.com/bifrost-actual/bifrost-coin.git
-cd bifrost-coin
+git clone https://github.com/EvilCrypto/MasterBitPOS.git
+cd masterbitpos-coin
 ```
 
 #### Step 8 - Generate the automake files for your compile
@@ -130,14 +130,14 @@ sudo make install
 cd
 ```
 
-#### Step 11 - Start and intentionally crash the bifrost wallet
+#### Step 11 - Start and intentionally crash the masterbitpos wallet
 
-The first time you launch the bifrost wallet, it will complain about missing information in its configuration file, and immediately quit.  This is ok, since the server creates a data directory before it quits, which we need for the next step.
+The first time you launch the masterbitpos wallet, it will complain about missing information in its configuration file, and immediately quit.  This is ok, since the server creates a data directory before it quits, which we need for the next step.
 
 In your console, enter the following command:
 
 ```
-bifrostd -daemon
+masterbitposd -daemon
 ```
 
 After you see the error message, press the enter key to return to the command line.
@@ -147,10 +147,10 @@ After you see the error message, press the enter key to return to the command li
 In your console, enter the following command:
 
 ```
-nano .bifrost/bifrost.conf
+nano .masterbitpos/masterbitpos.conf
 ```
 
-This will open the empty bifrost.conf file in the nano editor.
+This will open the empty masterbitpos.conf file in the nano editor.
 
 Add the following lines to the configuration; replacing the parts in brackets [] with your own data:
 
@@ -177,10 +177,10 @@ To save your file, press ctrl-x and then "Y" when asked to save the modified buf
 In your console, enter the following command:
 
 ```
-bifrostd
+masterbitposd
 ```
 
-The system will report **Bifrost server starting** and start downloading the blockchain data from the network.
+The system will report **MasterBitPOS server starting** and start downloading the blockchain data from the network.
 
 #### Step 14 - Create a masternode private key.
 
@@ -188,7 +188,7 @@ In your console, enter the following command:
 
 
 ```
-bifrost-cli masternode genkey
+masterbitpos-cli masternode genkey
 ```
 
 The sever will respond with a long string...something like:
@@ -204,7 +204,7 @@ Now that a key has been generated, add it to the configuration file.
 In your console, enter the following command:
 
 ```
-nano .bifrost/bifrost.conf
+nano .masterbitpos/masterbitpos.conf
 ```
 
 Once your editor opens, add the following lines to end of the file:
@@ -225,9 +225,9 @@ The final step is to restart your server, so it picks up your configuration chan
 In your console, enter the following commands:
 
 ```
-bifrost-cli stop
-bifrostd
+masterbitpos-cli stop
+masterbitposd
 ```
 
-Congratulations, your VPS masternode is now fully configured and running.  Take note of your private key, and your VPS server's IP address, and return to the **Prepare your local control wallet** section of the [Setup Guide for Windows Cold Wallet and Linux VPS Server](https://github.com/bifrost-actual/bifrost-resources/blob/master/hot-cold-wallet-guide/hot-cold-wallet-guide.md)
+Congratulations, your VPS masternode is now fully configured and running.  Take note of your private key, and your VPS server's IP address, and return to the **Prepare your local control wallet** section of the [Setup Guide for Windows Cold Wallet and Linux VPS Server](https://github.com/masterbitpos-actual/masterbitpos-resources/blob/master/hot-cold-wallet-guide/hot-cold-wallet-guide.md)
 
